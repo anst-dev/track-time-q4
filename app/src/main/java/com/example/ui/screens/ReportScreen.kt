@@ -530,6 +530,12 @@ fun AiAnalysisSubPage(viewModel: TimeTrackerViewModel) {
     val aiResponse by viewModel.aiAnalysisText.collectAsState()
     val aiLoading by viewModel.aiLoading.collectAsState()
 
+    LaunchedEffect(Unit) {
+        if (aiResponse.isEmpty() && !aiLoading) {
+            viewModel.generateAiAnalysis()
+        }
+    }
+
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {

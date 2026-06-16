@@ -241,7 +241,7 @@ fun AddTaskOrNoteBottomSheet(
     viewModel: TimeTrackerViewModel,
     onDismiss: () -> Unit
 ) {
-    var selectedTab by remember { mutableStateOf("Công việc") } // "Công việc" or "Ghi chú"
+    var selectedTab by remember { mutableStateOf("Ghi chú") } // "Công việc" or "Ghi chú"
     var title by remember { mutableStateOf("") }
     var contentDesc by remember { mutableStateOf("") }
     var estimatedMins by remember { mutableStateOf("30") }
@@ -269,7 +269,7 @@ fun AddTaskOrNoteBottomSheet(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Thêm công việc mới",
+                    text = if (selectedTab == "Công việc") "Thêm công việc mới" else "Thêm ghi chú mới",
                     color = Color.White,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
@@ -360,21 +360,21 @@ fun AddTaskOrNoteBottomSheet(
                 modifier = Modifier.fillMaxWidth().height(100.dp)
             )
 
-            // SELECT PRIORITY QUADRANT CARDS
-            Text(
-                text = "MỨC ĐỘ ƯU TIÊN (EISENHOWER)",
-                color = FloatColorDarkWhite,
-                fontSize = 11.sp,
-                fontWeight = FontWeight.Bold,
-                letterSpacing = 1.sp
-            )
-
-            GridQuadrantOptions(
-                selectedQuadrant = selectedQuadrant,
-                onQuadrantSelect = { selectedQuadrant = it }
-            )
-
             if (selectedTab == "Công việc") {
+                // SELECT PRIORITY QUADRANT CARDS
+                Text(
+                    text = "MỨC ĐỘ ƯU TIÊN (EISENHOWER)",
+                    color = FloatColorDarkWhite,
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 1.sp
+                )
+
+                GridQuadrantOptions(
+                    selectedQuadrant = selectedQuadrant,
+                    onQuadrantSelect = { selectedQuadrant = it }
+                )
+
                 // Estimated time input
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -457,7 +457,7 @@ fun AddTaskOrNoteBottomSheet(
                                 viewModel.createNote(
                                     title = title,
                                     content = contentDesc,
-                                    quadrant = selectedQuadrant
+                                    quadrant = 4
                                 )
                             }
                         }
@@ -744,7 +744,6 @@ fun EditNoteSubScreen(
 ) {
     var title by remember { mutableStateOf(note.title) }
     var content by remember { mutableStateOf(note.content) }
-    var selectedQuadrant by remember { mutableStateOf(note.quadrant) }
 
     Column(
         modifier = Modifier
@@ -796,19 +795,6 @@ fun EditNoteSubScreen(
             modifier = Modifier.fillMaxWidth().height(180.dp).padding(bottom = 16.dp)
         )
 
-        Text(
-            text = "ASSOCIATED PRIORITY QUADRANT",
-            color = Color.Gray,
-            fontSize = 11.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
-
-        GridQuadrantOptions(
-            selectedQuadrant = selectedQuadrant,
-            onQuadrantSelect = { selectedQuadrant = it }
-        )
-
         Spacer(modifier = Modifier.height(24.dp))
 
         Button(
@@ -816,8 +802,7 @@ fun EditNoteSubScreen(
                 viewModel.updateNote(
                     note.copy(
                         title = title,
-                        content = content,
-                        quadrant = selectedQuadrant
+                        content = content
                     )
                 )
                 onDismiss()
