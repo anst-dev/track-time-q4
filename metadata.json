@@ -1,0 +1,6 @@
+{
+  "name": "Eisenhower Time Tracker",
+  "description": "Premium 4-quadrant Eisenhower productivity matrix companion and note log manager with automatic time tracking, analytics and Google Sheets sync",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
